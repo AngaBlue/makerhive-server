@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "esnext",
+        "outDir": "build",
+        "rootDir": "server",
+        "esModuleInterop": true,
+        "noImplicitAny": false,
+        "typeRoots" : ["./node_modules/@types", "./server/typings"]
+    },
+    "include": [
+        "server/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts",
+        "client",
+        "build"
+    ]
+}
