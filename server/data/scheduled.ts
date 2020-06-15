@@ -1,6 +1,16 @@
-import data from "./"
+import data from ".";
 
-async function init () {
+async function init() {
     data.cache.ranks = await data.ranks.fetchAll()
 }
-init();
+
+async function hourly() {
+    return;
+};
+setInterval(hourly, 1000 * 60 * 60);
+
+//Init
+(async () => {
+    await init();
+    await hourly();
+})()

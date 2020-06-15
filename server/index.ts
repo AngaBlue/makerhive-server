@@ -1,16 +1,13 @@
-import mysql from "mysql2/promise";
+import "reflect-metadata";
+import { createConnection, Connection } from "typeorm";
+
 //Init Environmental Variables
 const config = require("dotenv").config().parsed;
-let db: mysql.Connection;
+let db: Connection;
 //Connect DB then Start Web Server
 (async () => {
-	db = await mysql.createConnection({
-		host: "localhost",
-		user: config["db.user"],
-		database: config["db.database"],
-		password: config["db.password"]
-	})
-	console.log(`Connected to DB: ${config["db.user"]}@localhost, ${config["db.database"]}`)
+	db = await createConnection();
+	console.log(`Connected to DB: ${config.TYPEORM_USERNAME}@${config.TYPEORM_HOST}, ${config.TYPEORM_DATABASE}`)
 	require("./server");
 })()
 

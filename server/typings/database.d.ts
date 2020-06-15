@@ -42,5 +42,6 @@ declare namespace database {
         email: string
         rank: ranks["id"]
         joined: number
+        image?: string
     }
 }

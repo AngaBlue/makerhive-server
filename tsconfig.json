@@ -5,16 +5,17 @@
         "outDir": "build",
         "rootDir": "server",
         "esModuleInterop": true,
-        "noImplicitAny": false,
-        "typeRoots" : ["./node_modules/@types", "./server/typings"]
+        "noImplicitAny": true,
+        "typeRoots": [
+            "node_modules/@types",
+            "server/typings"
+        ],
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": ["ES6"],
+        "pretty": true
     },
     "include": [
-        "server/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.spec.ts",
-        "client",
-        "build"
+        "server/**/*"
     ]
 }

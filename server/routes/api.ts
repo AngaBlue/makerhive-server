@@ -1,8 +1,8 @@
+///<reference path="../typings/Express.d.ts"/>
 import { Router } from "express";
 import joi from "@hapi/joi";
-import "../typings/Express";
 
-let router = Router()
+const router = Router()
 
 const APIRequestSchema = joi.object({
     id: joi.number().integer().min(0).required(),
@@ -32,10 +32,10 @@ export class Endpoint {
     }
 }
 
-import endpoints from "./endpoints/.";
+import endpoints from "./endpoints";
 
 router.post("/", async (req, res, next) => {
-    async function handleRequest (apiReq: APIRequest): Promise<APIResponse> {
+    async function handleRequest(apiReq: APIRequest): Promise<APIResponse> {
         //Find endpoint
         let endpoint = endpoints.find(e => e.type === apiReq.type);
         if (!endpoint) {
@@ -85,11 +85,19 @@ router.post("/", async (req, res, next) => {
         return new Promise(async (resolve, reject) => {
             try {
                 //Resolve Response Asynchonously
-                resolve({
-                    id: apiReq.id,
-                    type: endpoint.type,
-                    payload: await (Promise.resolve(endpoint.run(req, res, validation.value)))
-                })
+                let payload = await (Promise.resolve(endpoint.run(req, res, validation.value)))
+                if (payload === undefined) {
+                    resolve({
+                        id: apiReq.id,
+                        type: endpoint.type,
+                    })
+                } else {
+                    resolve({
+                        id: apiReq.id,
+                        type: endpoint.type,
+                        payload
+                    })
+                }
             } catch (error) {
                 //Resolve Error Response
                 let errorResponse: APIResponse = {
@@ -114,22 +122,19 @@ router.post("/", async (req, res, next) => {
         })
     }
     //Validate Request Structure
-    try {
-        var body = APIRequestSchema.validate(JSON.parse(req.body))
-        if (body.error) return res.send({
-            error: {
-                name: "Malformed Request",
-                message: body.error.message
-            }
-        })
-    } catch (error) {
-        return res.send({
-            error: {
-                name: "Malformed Request",
-                message: "Invalid API request structure."
-            }
-        })
-    }
+    if (!req.body) return res.send({
+        error: {
+            name: "Malformed Request",
+            message: "Invalid API request structure."
+        }
+    })
+    let body = APIRequestSchema.validate(req.body)
+    if (body.error) return res.send({
+        error: {
+            name: "Malformed Request",
+            message: body.error.message
+        }
+    })
     let response = await handleRequest(body.value as APIRequest)
     //Send Response
     return res.send(response)
