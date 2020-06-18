@@ -1,12 +1,13 @@
 import { Endpoint } from "../api";
+import joi from "@hapi/joi";
 import { getRepository } from "typeorm";
-import { Rank } from "../../entities/Rank";
 
 export default new Endpoint({
-    type: "GET_ALL_RANKS",
+    type: "PATCH_ITEM",
     authenticated: true,
     permissions: 5,
-    run: async (req, res, payload?) => {
-        return await getRepository(Rank).find()
+    schema: joi.object({}),
+    run: async (req, res,) => {
+        return;
     }
 });

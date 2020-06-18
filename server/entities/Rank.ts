@@ -5,10 +5,13 @@ import { User } from "./User"
 export class Rank {
     @PrimaryGeneratedColumn()
     id: number
+
     @Column()
     name: string
+
     @Column({ type: "int" })
     permissions: number
+    
     @OneToMany(type => User, user => user.rank)
     users: User[]
 }

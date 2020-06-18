@@ -17,12 +17,12 @@ class Data {
             return (await db.query(`SELECT * FROM users;`))[0] as RowDataPacket[] as database.users[];
         },
         add: async (user: Pick<database.users, "name" | "email" | "image">) => {
-            return ((await db.execute(`INSERT INTO users (name, email, image) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, image = ?`, [user.name, user.email, user.image || null, user.name, user.image || null]))[0] as OkPacket | ResultSetHeader)
+            return ((await db.query(`INSERT INTO users (name, email, image) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = ?, image = ?`, [user.name, user.email, user.image || null, user.name, user.image || null]))[0] as OkPacket | ResultSetHeader)
         },
         update: async (user: { id: database.users["id"] } & Partial<Pick<database.users, "name" | "email" | "rank">>) => {
             let oldUser = await this.users.fetch(user.id)
             let newUser = Object.assign(oldUser, user)
-            return (await db.execute(`UPDATE users SET name = ?, email = ?, rank = ? WHERE id = ?`, [newUser.name, newUser.email, newUser.rank, newUser.id]))[0]
+            return (await db.query(`UPDATE users SET name = ?, email = ?, rank = ? WHERE id = ?`, [newUser.name, newUser.email, newUser.rank, newUser.id]))[0]
         }
     }
     borrowedItems = {

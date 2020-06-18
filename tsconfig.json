@@ -13,7 +13,8 @@
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "lib": ["ES6"],
-        "pretty": true
+        "pretty": true,
+        "sourceMap": true
     },
     "include": [
         "server/**/*"

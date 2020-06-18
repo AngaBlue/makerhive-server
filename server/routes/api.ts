@@ -32,7 +32,7 @@ export class Endpoint {
     }
 }
 
-import endpoints from "./endpoints";
+import endpoints from "./endpoints/index";
 
 router.post("/", async (req, res, next) => {
     async function handleRequest(apiReq: APIRequest): Promise<APIResponse> {
@@ -58,13 +58,13 @@ router.post("/", async (req, res, next) => {
                     message: `Unauthorised Request.`
                 }
             }
-            if (endpoint.permissions) {
+            if (endpoint.permissions !== undefined) {
                 if (req.user.rank.permissions < endpoint.permissions) return {
                     id: apiReq.id,
                     type: endpoint.type,
                     error: {
                         name: "Forbidden",
-                        message: `Lacking Permissions.  Permission level required: ${endpoint.authenticated}`
+                        message: `Lacking Permissions.  Permission level required: ${endpoint.permissions}`
                     }
                 }
             }
@@ -85,7 +85,7 @@ router.post("/", async (req, res, next) => {
         return new Promise(async (resolve, reject) => {
             try {
                 //Resolve Response Asynchonously
-                let payload = await (Promise.resolve(endpoint.run(req, res, validation.value)))
+                let payload = await (Promise.resolve(endpoint.run(req, res, validation ? validation.value : undefined)))
                 if (payload === undefined) {
                     resolve({
                         id: apiReq.id,

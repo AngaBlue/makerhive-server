@@ -1,6 +1,5 @@
 import { Router } from "express";
 import joi from "@hapi/joi";
-import bodyParser from "body-parser"
 import sharp from "sharp"
 import multer from "multer";
 import path from "path";

@@ -1,32 +1,30 @@
-import { config, db } from "../index"
+import { config } from "../index"
 import { app } from "../server";
 import passport from "passport";
-import * as session from "express-session";
+import session from "express-session";
 import cors from "cors";
 import { Strategy as GoogleStrategy, Profile as GoogleProfile } from "passport-google-oauth20";
-import { TypeormStore } from "connect-typeorm";
-import data from "../data/"
+import { TypeormStore } from "typeorm-store";
+import { getRepository } from "typeorm";
 import { Session } from "../entities/Session";
+import { User } from "../entities/User";
 
 app.set('trust proxy', 1)
-app.use(cors({
-    origin: "http://localhost:3000",
-    credentials: true,
-    preflightContinue: true
-}))
-app.use(session.default({
+app.use(cors())
+
+app.use(session({
     secret: config.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
     store: new TypeormStore({
-        cleanupLimit: 2,
-        ttl: config.COOKIE_EXPIRY
-    }).connect(db.getRepository(Session)),
+        repository: getRepository(Session),
+        clearExpired: true,
+    }),
     cookie: {
         domain: "makerhive.anga.blue",
         secure: true,
-        maxAge: config.COOKIE_EXPIRY,
-        sameSite: "none"
+        sameSite: "none",
+        expires: new Date(Date.now() + config.COOKIE_EXPIRY)
     }
 }))
 
@@ -38,11 +36,11 @@ passport.serializeUser(async function (user: any, cb) {
 });
 
 passport.deserializeUser(async function (userID: number, cb) {
-    let user = await data.users.fetch(userID)
-    cb(null, {
-        ...user,
-        rank: data.cache.ranks.find(r => r.id === user.rank)
+    let user = await getRepository(User).findOne({
+        where: { id: userID },
+        relations: ["rank"]
     });
+    cb(null, user || null)
 });
 
 passport.use(new GoogleStrategy({
@@ -52,18 +50,24 @@ passport.use(new GoogleStrategy({
     passReqToCallback: true,
 },
     async function (request, accessToken, refreshToken, profile: GoogleProfile, done) {
-        let user = await data.users.fetchByEmail(profile._json.email)
-        if (!user) {
+        const userRepository = getRepository(User)
+        //Find User by Email
+        let user = await userRepository.findOne({ email: profile._json.email })
+        if (user) {
+            //If Existing User, update info
+            user.image = profile._json.picture
+            user.name = profile._json.name
+        } else {
             //If New User
             if (profile._json.hd !== "cgs.vic.edu.au") return done(`Invalid email ${profile._json.email}`)
+            user = userRepository.create({
+                name: profile._json.name,
+                email: profile._json.email,
+                image: profile._json.picture,
+            })
         }
         //Add or Update User
-        await data.users.add({
-            name: profile._json.name,
-            email: profile._json.email,
-            image: profile._json.picture
-        })
-        user = await data.users.fetchByEmail(profile._json.email)
+        user = await userRepository.save(user);
         return done(null, user);
     }
 ));

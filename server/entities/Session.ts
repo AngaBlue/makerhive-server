@@ -1,16 +1,14 @@
-import { ISession } from "connect-typeorm";
-import { Column, Entity, Index, PrimaryColumn } from "typeorm";
-import { Bigint } from "typeorm-static";
- 
+import { SessionEntity } from "typeorm-store";
+import { Column, Entity, PrimaryColumn, BaseEntity } from "typeorm";
+
 @Entity()
-export class Session implements ISession {
-  @Index()
-  @Column("bigint", { transformer: Bigint })
-  public expiredAt = Date.now();
- 
-  @PrimaryColumn("varchar", { length: 255 })
-  public id = "";
- 
-  @Column("text")
-  public json = "";
+export class Session extends BaseEntity implements SessionEntity {
+    @PrimaryColumn()
+    id: string;
+
+    @Column()
+    expiresAt: number;
+
+    @Column({ length: 1024 })
+    data: string;
 }

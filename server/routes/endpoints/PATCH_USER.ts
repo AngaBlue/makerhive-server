@@ -1,6 +1,8 @@
 import { Endpoint } from "../api";
 import joi from "@hapi/joi";
-import data from "../../data"
+import { getRepository } from "typeorm";
+import { User } from "../../entities/User";
+import { Rank } from "../../entities/Rank";
 
 export default new Endpoint({
     type: "PATCH_USER",
@@ -12,23 +14,35 @@ export default new Endpoint({
         email: joi.string().email().max(255),
         rank: joi.number().integer()
     }),
-    run: async (req, res, payload: { id: database.users["id"] } & Partial<Pick<database.users, "name" | "email" | "rank">>) => {
+    run: async (req, res, payload: { id: User["id"], rank?: Rank["id"] } & Partial<Pick<User, "name" | "email">>) => {
         //Check Valid User
-        let user = await data.users.fetch(payload.id)
+        let user = await getRepository(User).findOne({ where: { id: payload.id }, relations: ["rank"] })
         if (!user) throw {
             name: "Unknown User",
             message: "The user specified does not exist."
         }
+        //If User to be modified has higher permissions
+        if (user.rank.permissions > req.user.rank.permissions) throw {
+            name: "Forbidden",
+            message: "Lacking permissions to modify this user."
+        }
         //Check Valid Rank
         if (payload.rank) {
-            let rank = data.cache.ranks.find(r => r.id === payload.rank)
+            let rank = await getRepository(Rank).findOne(payload.rank)
             if (!rank) throw {
                 name: "Unknown Rank",
                 message: "The rank specified does not exist."
             }
+            if (rank.permissions > req.user.rank.permissions) throw {
+                name: "Forbidden",
+                message: "Can't set ranks higher than your own."
+            }
+            user.rank = rank
         }
+        if (payload.name) user.name = payload.name
+        if (payload.email) user.email = payload.email
         //Update
-        await data.users.update(payload)
+        await getRepository(User).save(user)
         return;
     }
 });

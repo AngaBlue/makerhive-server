@@ -1,11 +1,12 @@
 import { Endpoint } from "../api";
-import data from "../../data"
+import { getRepository } from "typeorm";
+import { User } from "../../entities/User";
 
-export default new Endpoint ({
+export default new Endpoint({
     type: "GET_ALL_USERS",
     authenticated: true,
     permissions: 5,
     run: async (req, res, payload?) => {
-        return await data.users.fetchAll();
+        return await getRepository(User).find({ relations: ["rank"] });
     }
 });

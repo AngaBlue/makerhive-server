@@ -1,25 +1,27 @@
 import { Endpoint } from "../api";
 import joi from "@hapi/joi";
-import data from "../../data"
+import { Loan } from "../../entities/Loan";
+import { getRepository } from "typeorm";
 
 export default new Endpoint({
-    type: "PATCH_RETURN_ITEM",
+    type: "PATCH_RETURN_LOAN",
     authenticated: true,
     schema: joi.number().integer().required(),
-    run: async (req, res, payload: database.borrowedItems["id"]) => {
+    run: async (req, res, payload: Loan["id"]) => {
         //Check Valid Loan
-        let loan = await data.borrowedItems.fetch(payload)
+        let loan = await getRepository(Loan).findOne({ where: { id: payload }, relations: ["user"] })
         if (!loan) throw {
             name: "Unknown Loan",
             message: "The loan specified does not exist."
         }
         //If loan is not user's own, and user is not an admin
-        if (loan.id !== req.user.id && req.user!.rank.permissions < 5) throw {
+        if (loan.user.id !== req.user.id && req.user.rank.permissions < 5) throw {
             name: "Unknown Loan",
             message: "The loan specified does not exist."
         }
         //Update
-        await data.borrowedItems.return(loan.id)
+        loan.returned = new Date();
+        await getRepository(Loan).save(loan);
         return;
     }
 });
