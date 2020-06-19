@@ -17,7 +17,7 @@
                 "${workspaceFolder}/build/**/*.js"
             ],
             "env": {
-                "PORT": 3025,
+                "PORT": "3025",
             }
         }
     ]
