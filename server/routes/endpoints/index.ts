@@ -14,8 +14,8 @@ import GET_NOTIFICATIONS from "./GET_NOTIFICATIONS"
 import POST_LOAN_ITEM from "./POST_LOAN_ITEM"
 import POST_ADD_ITEM from "./POST_ADD_ITEM"
 import PATCH_ITEM from "./PATCH_ITEM"
-
-
+import POST_RESERVE_ITEM from "./POST_RESERVE_ITEM";
+import DELETE_RESERVATION from "./DELETE_RESERVATION"
 
 const endpoints: Endpoint[] = [
     GET_USER,
@@ -31,7 +31,9 @@ const endpoints: Endpoint[] = [
     GET_NOTIFICATIONS,
     POST_ADD_ITEM,
     POST_LOAN_ITEM,
-    PATCH_ITEM
+    PATCH_ITEM,
+    POST_RESERVE_ITEM,
+    DELETE_RESERVATION
 ]
 
 export default endpoints;

@@ -1,7 +1,7 @@
 import { Endpoint } from "../api";
 import joi from "@hapi/joi";
 import { Loan } from "../../entities/Loan";
-import { getRepository } from "typeorm";
+import { getRepository, IsNull } from "typeorm";
 
 export default new Endpoint({
     type: "PATCH_RETURN_LOAN",
@@ -9,7 +9,7 @@ export default new Endpoint({
     schema: joi.number().integer().required(),
     run: async (req, res, payload: Loan["id"]) => {
         //Check Valid Loan
-        let loan = await getRepository(Loan).findOne({ where: { id: payload }, relations: ["user"] })
+        let loan = await getRepository(Loan).findOne({ where: { id: payload, returned: IsNull() }, relations: ["user"] })
         if (!loan) throw {
             name: "Unknown Loan",
             message: "The loan specified does not exist."
@@ -21,7 +21,6 @@ export default new Endpoint({
         }
         //Update
         loan.returned = new Date();
-        await getRepository(Loan).save(loan);
-        return;
+        return await getRepository(Loan).save(loan);
     }
 });

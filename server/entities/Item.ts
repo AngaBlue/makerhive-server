@@ -11,21 +11,24 @@ export class Item {
     name: string
 
     @Column({ length: 1024, nullable: true })
-    description: string
+    description?: string
 
     @Column()
     quantity: number;
 
     @Column({ length: 16, nullable: true })
-    image: string;
+    image?: string;
 
     @Index()
     @Column()
     hidden: boolean;
 
+    @Column({ length: 64, nullable: true })
+    location?: string;
+
     @OneToMany(type => Loan, loan => loan.item)
     loans: Loan[];
-    
+
     @OneToMany(type => Reservation, reservation => reservation.item)
     reservations: Reservation[];
 }

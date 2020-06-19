@@ -42,7 +42,6 @@ export default new Endpoint({
         if (payload.name) user.name = payload.name
         if (payload.email) user.email = payload.email
         //Update
-        await getRepository(User).save(user)
-        return;
+        return await getRepository(User).save(user)
     }
 });

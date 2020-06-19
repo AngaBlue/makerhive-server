@@ -22,8 +22,8 @@ export class Loan {
 
     @Index()
     @Column({ nullable: true })
-    returned: Date;
+    returned?: Date;
 
     @Column({ nullable: true, length: 1024 })
-    note: string
+    note?: string
 }

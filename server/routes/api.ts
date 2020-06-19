@@ -1,6 +1,7 @@
 ///<reference path="../typings/Express.d.ts"/>
 import { Router } from "express";
 import joi from "@hapi/joi";
+import { upload } from "./api/upload";
 
 const router = Router()
 
@@ -34,7 +35,13 @@ export class Endpoint {
 
 import endpoints from "./endpoints/index";
 
-router.post("/", async (req, res, next) => {
+router.post("/", upload.single("image"), async (req, res, next) => {
+    //Try Parse Body Data if sent with multipart form
+    if (req.body.data) {
+        try {
+            req.body = JSON.parse(req.body.data)
+        } catch (error) { }
+    }
     async function handleRequest(apiReq: APIRequest): Promise<APIResponse> {
         //Find endpoint
         let endpoint = endpoints.find(e => e.type === apiReq.type);

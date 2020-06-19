@@ -12,9 +12,7 @@ pids
 logs
 results
 tmp
-
-# Build
-public/css/main.css
+static
 
 # Coverage reports
 coverage
