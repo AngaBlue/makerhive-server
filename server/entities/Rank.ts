@@ -6,12 +6,12 @@ export class Rank {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column("varchar", { length: 32 })
     name: string
 
-    @Column({ type: "int" })
+    @Column("int", { width: 3 })
     permissions: number
-    
+
     @OneToMany(type => User, user => user.rank)
     users: User[]
 }

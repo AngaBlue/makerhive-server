@@ -13,14 +13,14 @@ export class Item {
     @Column({ length: 1024, nullable: true })
     description?: string
 
-    @Column()
+    @Column("int", { default: 1, width: 3 })
     quantity: number;
 
     @Column({ length: 16, nullable: true })
     image?: string;
 
     @Index()
-    @Column()
+    @Column("tinyint", { width: 1 })
     hidden: boolean;
 
     @Column({ length: 64, nullable: true })

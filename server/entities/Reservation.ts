@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Index, ManyToOne, CreateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Index, ManyToOne, CreateDateColumn, JoinColumn } from "typeorm";
 import { User } from "./User";
 import { Item } from "./Item";
 
@@ -7,17 +7,19 @@ export class Reservation {
     @PrimaryGeneratedColumn()
     id: number
 
-    @ManyToOne(type => User, user => user.reservations)
+    @ManyToOne(type => User, user => user.reservations, { nullable: false })
+    @JoinColumn({ name: "user" })
     user: User
 
-    @ManyToOne(type => Item, item => item.reservations)
+    @ManyToOne(type => Item, item => item.reservations, { nullable: false })
+    @JoinColumn({ name: "item" })
     item: Item
 
-    @Column({ type: "int" })
+    @Column("int", { default: 1, width: 3 })
     quantity: number;
 
     @Index()
-    @CreateDateColumn()
+    @CreateDateColumn(({ precision: 0, default: () => "CURRENT_TIMESTAMP" }))
     reserved: Date;
 
     @Column({ nullable: true, length: 1024 })
