@@ -15,11 +15,12 @@ export default new Endpoint({
                 name: "Forbidden",
                 message: "Lacking permissions to view this user's profile."
             };
-        //Fetch Profile
+        //Get User w/ Reservations & Rank
         let user = await getRepository(User).findOne({
             where: { id: payload },
             relations: ["reservations", "rank", "reservations.item"]
         });
+        //Get User Loans (Limit of 25 for client performance)
         user.loans = await getRepository(Loan)
             .createQueryBuilder("loan")
             .leftJoinAndSelect("loan.item", "item")

@@ -2,6 +2,7 @@ import sharp from "sharp";
 
 export default async function processImage(image: Buffer, location: string, filename: string) {
     //Convert Images to Aspect Ratio of 4:3
+    //Thumbnail: 225x300
     let thumbnail = sharp(image)
         .resize({
             height: 225,
@@ -9,6 +10,7 @@ export default async function processImage(image: Buffer, location: string, file
             withoutEnlargement: true
         })
         .toFile(`${location}/${filename}-thumb.jpg`);
+    //Full Size: 600x800
     let full = sharp(image)
         .resize({
             height: 600,

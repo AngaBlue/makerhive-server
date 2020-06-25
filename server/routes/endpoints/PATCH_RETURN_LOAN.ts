@@ -24,7 +24,7 @@ export default new Endpoint({
                 name: "Unknown Loan",
                 message: "The loan specified does not exist."
             };
-        //Update
+        //Update Loan
         loan.returned = new Date();
         return await getRepository(Loan).save(loan);
     }

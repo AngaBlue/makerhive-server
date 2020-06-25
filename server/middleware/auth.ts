@@ -46,6 +46,7 @@ passport.serializeUser(async function (user: any, cb) {
 });
 
 passport.deserializeUser(async function (userID: number, cb) {
+    //Get user w/ rank
     let user = await getRepository(User).findOne({
         where: { id: userID },
         relations: ["rank"]

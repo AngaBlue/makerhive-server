@@ -23,6 +23,7 @@ export default new Endpoint({
         res,
         payload: Pick<Item, "id"> & Partial<Pick<Item, "name" | "quantity" | "description" | "location" | "hidden">>
     ) => {
+        //Find Item
         let item = await getRepository(Item).findOne(payload.id);
         if (!item)
             throw {
@@ -42,7 +43,7 @@ export default new Endpoint({
             //Update Database
             item.image = imageName;
         }
-        //Update
+        //Update Item Properties
         item.name = payload.name !== undefined ? payload.name : item.name;
         item.quantity = payload.quantity !== undefined ? payload.quantity : item.quantity;
         item.description = payload.description !== undefined ? payload.description : item.description;

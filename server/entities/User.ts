@@ -43,7 +43,7 @@ export class User {
     @CreateDateColumn({ precision: 0, default: () => "CURRENT_TIMESTAMP" })
     joined: Date;
 
-    @Column({ nullable: true, length: 1024 })
+    @Column({ length: 16, nullable: true })
     image?: string;
 
     @OneToMany((type) => Loan, (loan) => loan.user)

@@ -46,6 +46,7 @@ export default new Endpoint({
                 };
             user.rank = rank;
         }
+        //Update User Properties
         if (payload.name) user.name = payload.name;
         if (payload.email) user.email = payload.email;
         //Update

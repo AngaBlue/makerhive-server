@@ -34,7 +34,7 @@ export class Endpoint {
 }
 
 import endpoints from "./endpoints/index";
-
+// /api manages all API requests, w/ authorisation, schema & error handling
 router.post("/", upload.single("image"), async (req, res, next) => {
     //Try Parse Body Data if sent with multipart form
     if (req.body.data) {
@@ -57,6 +57,7 @@ router.post("/", upload.single("image"), async (req, res, next) => {
         }
         //Check Auth
         if (endpoint.authenticated) {
+            //Check if logged in
             if (!req.user)
                 return {
                     id: apiReq.id,
@@ -67,6 +68,7 @@ router.post("/", upload.single("image"), async (req, res, next) => {
                     }
                 };
             if (endpoint.permissions !== undefined) {
+                //Check if meets nescessary permissions
                 if (req.user.rank.permissions < endpoint.permissions)
                     return {
                         id: apiReq.id,
@@ -114,6 +116,7 @@ router.post("/", upload.single("image"), async (req, res, next) => {
                     id: apiReq.id,
                     type: apiReq.type
                 };
+                //Return & Log Generic Error if unknown error
                 if (error.stack && process.env.env !== "DEV") {
                     errorResponse.error = {
                         name: "Internal Server Error",

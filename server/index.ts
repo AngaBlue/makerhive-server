@@ -11,10 +11,5 @@ let db: Connection;
     require("./server");
 })();
 
-//Process
-/*process.on("unhandledRejection", (err) => {
-	console.error("Caught Exception", JSON.stringify(err))
-})*/
-
 //Exports
 export { config, db };

@@ -8,6 +8,7 @@ export default new Endpoint({
     authenticated: true,
     schema: Joi.number().integer().min(0).required(),
     run: async (req, res, payload: number) => {
+        //Find Reservation by ID
         let reservation = await getRepository(Reservation).findOne({
             relations: ["user"],
             where: { id: payload }

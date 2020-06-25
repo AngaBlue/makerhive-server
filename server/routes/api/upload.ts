@@ -1,5 +1,6 @@
 import multer from "multer";
 
+//Allow image upload
 export const storage = multer.memoryStorage();
 export const upload = multer({
     storage: storage,

@@ -9,6 +9,7 @@ export default new Endpoint({
     type: "GET_ITEM",
     schema: Joi.number().integer().min(0).required(),
     run: async (req, res, payload: number) => {
+        //Get All Items w/ Active Loans, Reservations and Where Not Hidden
         let item = await getRepository(Item)
             .createQueryBuilder("item")
             .leftJoinAndSelect("item.loans", "loan", "loan.returned IS NULL")

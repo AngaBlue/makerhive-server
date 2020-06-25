@@ -7,6 +7,7 @@ export default new Endpoint({
     authenticated: true,
     permissions: 5,
     run: async (req, res, payload?) => {
+        //Get All User w/ Rank
         return await getRepository(User).find({ relations: ["rank"] });
     }
 });
