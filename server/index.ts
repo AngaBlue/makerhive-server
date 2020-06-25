@@ -6,10 +6,10 @@ const config = require("dotenv").config().parsed;
 let db: Connection;
 //Connect DB then Start Web Server
 (async () => {
-	db = await createConnection();
-	console.log(`Connected to DB: ${config.TYPEORM_USERNAME}@${config.TYPEORM_HOST}, ${config.TYPEORM_DATABASE}`)
-	require("./server");
-})()
+    db = await createConnection();
+    console.log(`Connected to DB: ${config.TYPEORM_USERNAME}@${config.TYPEORM_HOST}, ${config.TYPEORM_DATABASE}`);
+    require("./server");
+})();
 
 //Process
 /*process.on("unhandledRejection", (err) => {

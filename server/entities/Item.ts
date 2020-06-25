@@ -5,13 +5,13 @@ import { Reservation } from "./Reservation";
 @Entity()
 export class Item {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
     @Column({ length: 128 })
-    name: string
+    name: string;
 
     @Column({ length: 1024, nullable: true })
-    description?: string
+    description?: string;
 
     @Column("int", { default: 1, width: 3 })
     quantity: number;
@@ -26,9 +26,9 @@ export class Item {
     @Column({ length: 64, nullable: true })
     location?: string;
 
-    @OneToMany(type => Loan, loan => loan.item)
+    @OneToMany((type) => Loan, (loan) => loan.item)
     loans: Loan[];
 
-    @OneToMany(type => Reservation, reservation => reservation.item)
+    @OneToMany((type) => Reservation, (reservation) => reservation.item)
     reservations: Reservation[];
 }

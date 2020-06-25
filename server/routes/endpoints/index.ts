@@ -5,17 +5,17 @@ import GET_ALL_ITEMS from "./GET_ALL_ITEMS";
 import GET_ALL_USERS from "./GET_ALL_USERS";
 import GET_ALL_RANKS from "./GET_ALL_RANKS";
 import PATCH_USER from "./PATCH_USER";
-import PATCH_RETURN_LOAN from "./PATCH_RETURN_LOAN"
+import PATCH_RETURN_LOAN from "./PATCH_RETURN_LOAN";
 import GET_ITEM from "./GET_ITEM";
-import GET_USER_PROFILE from "./GET_USER_PROFILE"
-import GET_ALL_RESERVATIONS from "./GET_ALL_RESERVATIONS"
-import GET_ALL_LOANS from "./GET_ALL_LOANS"
-import GET_NOTIFICATIONS from "./GET_NOTIFICATIONS"
-import POST_LOAN_ITEM from "./POST_LOAN_ITEM"
-import POST_ADD_ITEM from "./POST_ADD_ITEM"
-import PATCH_ITEM from "./PATCH_ITEM"
+import GET_USER_PROFILE from "./GET_USER_PROFILE";
+import GET_ALL_RESERVATIONS from "./GET_ALL_RESERVATIONS";
+import GET_ALL_LOANS from "./GET_ALL_LOANS";
+import GET_NOTIFICATIONS from "./GET_NOTIFICATIONS";
+import POST_LOAN_ITEM from "./POST_LOAN_ITEM";
+import POST_ADD_ITEM from "./POST_ADD_ITEM";
+import PATCH_ITEM from "./PATCH_ITEM";
 import POST_RESERVE_ITEM from "./POST_RESERVE_ITEM";
-import DELETE_RESERVATION from "./DELETE_RESERVATION"
+import DELETE_RESERVATION from "./DELETE_RESERVATION";
 
 const endpoints: Endpoint[] = [
     GET_USER,
@@ -34,6 +34,6 @@ const endpoints: Endpoint[] = [
     PATCH_ITEM,
     POST_RESERVE_ITEM,
     DELETE_RESERVATION
-]
+];
 
 export default endpoints;

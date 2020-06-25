@@ -9,16 +9,21 @@ export default new Endpoint({
     schema: joi.number().integer().required(),
     run: async (req, res, payload: Loan["id"]) => {
         //Check Valid Loan
-        let loan = await getRepository(Loan).findOne({ where: { id: payload, returned: IsNull() }, relations: ["user"] })
-        if (!loan) throw {
-            name: "Unknown Loan",
-            message: "The loan specified does not exist."
-        }
+        let loan = await getRepository(Loan).findOne({
+            where: { id: payload, returned: IsNull() },
+            relations: ["user"]
+        });
+        if (!loan)
+            throw {
+                name: "Unknown Loan",
+                message: "The loan specified does not exist."
+            };
         //If loan is not user's own, and user is not an admin
-        if (loan.user.id !== req.user.id && req.user.rank.permissions < 5) throw {
-            name: "Unknown Loan",
-            message: "The loan specified does not exist."
-        }
+        if (loan.user.id !== req.user.id && req.user.rank.permissions < 5)
+            throw {
+                name: "Unknown Loan",
+                message: "The loan specified does not exist."
+            };
         //Update
         loan.returned = new Date();
         return await getRepository(Loan).save(loan);

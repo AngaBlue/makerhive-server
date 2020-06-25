@@ -7,6 +7,9 @@ export default new Endpoint({
     authenticated: true,
     permissions: 5,
     run: async (req, res) => {
-        return await getRepository(Loan).find({ relations: ["user", "item"], where: { returned: IsNull() } })
+        return await getRepository(Loan).find({
+            relations: ["user", "item"],
+            where: { returned: IsNull() }
+        });
     }
 });

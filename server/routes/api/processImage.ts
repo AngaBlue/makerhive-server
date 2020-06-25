@@ -1,20 +1,20 @@
-import sharp from "sharp"
+import sharp from "sharp";
 
 export default async function processImage(image: Buffer, location: string, filename: string) {
-    //Convert Images to Aspect Ration
+    //Convert Images to Aspect Ratio of 4:3
     let thumbnail = sharp(image)
         .resize({
-            height: 256,
-            width: 384,
+            height: 225,
+            width: 300,
             withoutEnlargement: true
         })
-        .toFile(`${location}/${filename}-thumb.jpg`)
+        .toFile(`${location}/${filename}-thumb.jpg`);
     let full = sharp(image)
         .resize({
-            height: 720,
-            width: 1080,
+            height: 600,
+            width: 800,
             withoutEnlargement: true
         })
-        .toFile(`${location}/${filename}.jpg`)
-    return { thumbnail, full }
+        .toFile(`${location}/${filename}.jpg`);
+    return { thumbnail, full };
 }

@@ -7,6 +7,6 @@ export default new Endpoint({
     authenticated: true,
     permissions: 5,
     run: async (req, res, payload?) => {
-        return await getRepository(Rank).find()
+        return await getRepository(Rank).find();
     }
 });

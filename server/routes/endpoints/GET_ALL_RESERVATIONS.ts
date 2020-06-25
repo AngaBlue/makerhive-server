@@ -7,6 +7,8 @@ export default new Endpoint({
     authenticated: true,
     permissions: 5,
     run: async (req, res) => {
-        return await getRepository(Reservation).find({ relations: ["user", "item"] })
+        return await getRepository(Reservation).find({
+            relations: ["user", "item"]
+        });
     }
 });

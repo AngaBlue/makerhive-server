@@ -15,7 +15,11 @@ export default new Endpoint({
         description: joi.string().max(1024),
         location: joi.string().max(64)
     }),
-    run: async (req, res, payload: Pick<Item, "name" | "quantity"> & Partial<Pick<Item, "description" | "location" | "hidden">>) => {
+    run: async (
+        req,
+        res,
+        payload: Pick<Item, "name" | "quantity"> & Partial<Pick<Item, "description" | "location" | "hidden">>
+    ) => {
         //Create
         let item = getRepository(Item).create({
             name: payload.name,
@@ -23,16 +27,16 @@ export default new Endpoint({
             description: payload.description || null,
             location: payload.location || null,
             hidden: payload.hidden || false
-        })
-        item = await getRepository(Item).save(item)
+        });
+        item = await getRepository(Item).save(item);
         //Process Images
         if (req.file) {
             //Image Name = ItemID + Current Date to Random String to avoid cache collisions
-            let imageName = `${item.id}-${Date.now().toString(32)}`
-            await processImage(req.file.buffer, path.join(__dirname, "../../../static/img/item"), imageName)
+            let imageName = `${item.id}-${Date.now().toString(32)}`;
+            await processImage(req.file.buffer, path.join(__dirname, "../../../static/images/item"), imageName);
             //Update Database
-            item.image = imageName
-            item = await getRepository(Item).save(item)
+            item.image = imageName;
+            item = await getRepository(Item).save(item);
         }
         return item;
     }

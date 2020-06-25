@@ -1,19 +1,30 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, Index, ManyToOne, CreateDateColumn, JoinColumn } from "typeorm";
+import {
+    Entity,
+    PrimaryGeneratedColumn,
+    Column,
+    OneToMany,
+    Index,
+    ManyToOne,
+    CreateDateColumn,
+    JoinColumn
+} from "typeorm";
 import { User } from "./User";
 
 @Entity()
 export class Notification {
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
-    @ManyToOne(type => User, user => user.notifications, { nullable: false })
+    @ManyToOne((type) => User, (user) => user.notifications, {
+        nullable: false
+    })
     @JoinColumn({ name: "user" })
-    user: User
+    user: User;
 
     @Column({ length: 1024 })
-    message: string
+    message: string;
 
-    @CreateDateColumn(({ precision: 0, default: () => "CURRENT_TIMESTAMP" }))
+    @CreateDateColumn({ precision: 0, default: () => "CURRENT_TIMESTAMP" })
     timestamp: Date;
 
     @Index()
