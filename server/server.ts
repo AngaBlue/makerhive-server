@@ -11,7 +11,7 @@ import "./middleware/auth";
 app.use(express.static(path.join(__dirname, "../client/build")));
 
 //Serve Other Static Content
-app.use(express.static(path.join(__dirname, "../static")));
+app.use("/static", express.static(path.join(__dirname, "../static")));
 
 //Create Auth Route
 import authRoute from "./routes/auth";

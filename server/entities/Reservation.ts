@@ -33,4 +33,7 @@ export class Reservation {
 
     @Column({ nullable: true, length: 1024 })
     note: string;
+
+    @Column({select: false, readonly: true, nullable: true})
+    position: number;
 }

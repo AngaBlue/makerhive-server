@@ -20,7 +20,7 @@ export class Item {
     image?: string;
 
     @Index()
-    @Column("tinyint", { width: 1 })
+    @Column("boolean")
     hidden: boolean;
 
     @Column({ length: 64, nullable: true })

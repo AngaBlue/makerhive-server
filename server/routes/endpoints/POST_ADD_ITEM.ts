@@ -4,6 +4,7 @@ import { getRepository } from "typeorm";
 import { Item } from "../../entities/Item";
 import processImage from "../api/processImage";
 import path from "path";
+import { Loan } from "../../entities/Loan";
 
 export default new Endpoint({
     type: "POST_ADD_ITEM",
@@ -38,6 +39,13 @@ export default new Endpoint({
             item.image = imageName;
             item = await getRepository(Item).save(item);
         }
-        return item;
+        return await getRepository(Item)
+            .createQueryBuilder("item")
+            .select("item.*")
+            .leftJoin(Loan, "loan", "loan.item = item.id AND loan.returned IS NULL")
+            .groupBy("item.id")
+            .andWhere("item.id = :id", { id: item.id })
+            .addSelect("item.quantity - COALESCE(SUM(loan.quantity),0)", "available")
+            .getRawOne();
     }
 });

@@ -6,7 +6,7 @@ import GET_ALL_USERS from "./GET_ALL_USERS";
 import GET_ALL_RANKS from "./GET_ALL_RANKS";
 import PATCH_USER from "./PATCH_USER";
 import PATCH_RETURN_LOAN from "./PATCH_RETURN_LOAN";
-import GET_ITEM from "./GET_ITEM";
+import GET_ITEM_DETAILS from "./GET_ITEM_DETAILS";
 import GET_USER_PROFILE from "./GET_USER_PROFILE";
 import GET_ALL_RESERVATIONS from "./GET_ALL_RESERVATIONS";
 import GET_ALL_LOANS from "./GET_ALL_LOANS";
@@ -16,6 +16,7 @@ import POST_ADD_ITEM from "./POST_ADD_ITEM";
 import PATCH_ITEM from "./PATCH_ITEM";
 import POST_RESERVE_ITEM from "./POST_RESERVE_ITEM";
 import DELETE_RESERVATION from "./DELETE_RESERVATION";
+import GET_ITEM from "./GET_ITEM";
 
 const endpoints: Endpoint[] = [
     GET_USER,
@@ -24,6 +25,7 @@ const endpoints: Endpoint[] = [
     GET_ALL_RANKS,
     PATCH_USER,
     GET_ITEM,
+    GET_ITEM_DETAILS,
     GET_USER_PROFILE,
     PATCH_RETURN_LOAN,
     GET_ALL_RESERVATIONS,
