@@ -46,7 +46,7 @@ export default new Endpoint({
             ...user,
             reservations: reservations.map((r) => {
                 r.position = r.item.reservations.length + 1;
-                delete r.item.reservations
+                delete r.item.reservations;
                 return r;
             })
         };

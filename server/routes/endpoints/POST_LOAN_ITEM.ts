@@ -13,7 +13,7 @@ export default new Endpoint({
     schema: joi.object({
         item: joi.number().integer().min(0).required(),
         quantity: joi.number().integer().min(1).required(),
-        note: joi.string().max(1024)
+        note: joi.string().max(1024).allow(null, '')
     }),
     run: async (req, res, payload: { item: Item["id"] } & Pick<Loan, "quantity" | "note">) => {
         //Check Against Borrow Quantity Limits

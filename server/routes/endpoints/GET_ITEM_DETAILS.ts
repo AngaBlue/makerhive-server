@@ -1,12 +1,10 @@
 import { Endpoint } from "../api";
-import { getRepository, IsNull } from "typeorm";
+import { getRepository } from "typeorm";
 import { Item } from "../../entities/Item";
-import { Loan } from "../../entities/Loan";
-import { Reservation } from "../../entities/Reservation";
 import Joi from "@hapi/joi";
 
 export default new Endpoint({
-    type: "GET_ITEM",
+    type: "GET_ITEM_DETAILS",
     schema: Joi.number().integer().min(0).required(),
     run: async (req, res, payload: number) => {
         //Get All Items w/ Active Loans, Reservations and Where Not Hidden

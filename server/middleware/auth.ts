@@ -64,7 +64,7 @@ passport.use(
             passReqToCallback: true
         },
         async function (request, accessToken, refreshToken, _profile: GoogleProfile, done) {
-            const profile = _profile as unknown as Profile
+            const profile = (_profile as unknown) as Profile;
             const userRepository = getRepository(User);
             //Find User by Email
             let user = await userRepository.findOne({
@@ -88,7 +88,7 @@ passport.use(
                 let filename = `${user.id}-${Date.now().toString(32)}`;
                 await downloadImage({
                     url: profile._json.picture,
-                    dest: path.join(__dirname, "../../static/images/user", `${filename}.jpg`),
+                    dest: path.join(__dirname, "../../static/images/user", `${filename}.jpg`)
                     //timeout: 5000
                 });
                 if (user.image) {

@@ -10,7 +10,7 @@ export default new Endpoint({
     schema: Joi.number().integer().min(0).required(),
     run: async (req, res, payload: number) => {
         //Get All Items w/ Active Loans, Reservations and Where Not Hidden
-        let item = await getRepository(Item).findOne({ id: payload })
+        let item = await getRepository(Item).findOne({ id: payload });
         if (!item)
             throw {
                 name: "Unknown Item",
