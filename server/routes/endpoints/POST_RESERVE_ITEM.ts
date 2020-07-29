@@ -13,20 +13,20 @@ export default new Endpoint({
     schema: joi.object({
         item: joi.number().integer().min(0).required(),
         quantity: joi.number().integer().min(1).required(),
-        note: joi.string().max(1024)
+        note: joi.string().max(1024).allow("", null)
     }),
     run: async (req, res, payload: { item: Item["id"] } & Pick<Loan, "quantity" | "note">) => {
         //Check Against Reservation Limits
         let reservations = await getRepository(Reservation).find({
             user: req.user
         });
-        //If Over Reservation Limi
+        //If Over Reservation Limit
         if (reservations.length > config.MAX_LOANS)
             throw {
                 name: "Loan Limit Exceeded",
                 message: `A limit of ${config.MAX_LOANS} reservation${
                     config.MAX_LOANS === 1 ? "" : "s"
-                } per user is imposed.  Please delete a reservation in order to reserve another item.`
+                    } per user is imposed.  Please delete a reservation in order to reserve another item.`
             };
         //Check Item
         let item = await getRepository(Item)
@@ -47,7 +47,7 @@ export default new Endpoint({
                 name: "Insufficient Resources",
                 message: `Only ${payload.quantity} of the requested item ${
                     payload.quantity === 1 ? "is" : "are"
-                } available.`
+                    } available.`
             };
         //Check if User has an Existing Reservation
         let userReservation = item.reservations.find((r) => r.user.id === req.user.id);
@@ -63,6 +63,15 @@ export default new Endpoint({
             note: payload.note || null,
             user: req.user
         });
-        return await getRepository(Reservation).save(reservation);
+        reservation = await getRepository(Reservation).save(reservation);
+        reservation = await getRepository(Reservation)
+            .createQueryBuilder("reservation")
+            .leftJoinAndSelect("reservation.item", "item")
+            .leftJoinAndSelect("item.reservations", "itemRes", "itemRes.reserved < reservation.item")
+            .where("reservation.id = :id", { id: reservation.id })
+            .getOne();;
+        reservation.position = reservation.item.reservations.length + 1;
+        delete reservation.item.reservations;
+        return reservation;
     }
 });

@@ -14,7 +14,8 @@ export default new Endpoint({
         name: joi.string().max(128).required(),
         quantity: joi.number().integer().min(1).max(255).required(),
         description: joi.string().max(1024),
-        location: joi.string().max(64)
+        location: joi.string().max(64),
+        hidden: joi.boolean()
     }),
     run: async (
         req,

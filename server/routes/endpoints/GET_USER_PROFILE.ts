@@ -31,6 +31,8 @@ export default new Endpoint({
             .createQueryBuilder("loan")
             .leftJoinAndSelect("loan.item", "item")
             .orderBy("loan.borrowed", "DESC")
+            .where("loan.user = :id", user)
+            .andWhere("loan.returned IS NULL")
             .limit(25)
             .getMany();
         //Get User Reservations
@@ -38,6 +40,7 @@ export default new Endpoint({
             .createQueryBuilder("reservation")
             .leftJoinAndSelect("reservation.item", "item")
             .leftJoinAndSelect("item.reservations", "itemRes", "itemRes.reserved < reservation.item")
+            .where("reservation.user = :id", user)
             .orderBy("reservation.reserved", "DESC")
             .limit(25)
             .getMany();
