@@ -17,6 +17,7 @@ import PATCH_ITEM from "./PATCH_ITEM";
 import POST_RESERVE_ITEM from "./POST_RESERVE_ITEM";
 import DELETE_RESERVATION from "./DELETE_RESERVATION";
 import GET_ITEM from "./GET_ITEM";
+import DELETE_ITEM from "./DELETE_ITEM";
 
 const endpoints: Endpoint[] = [
     GET_USER,
@@ -35,7 +36,8 @@ const endpoints: Endpoint[] = [
     POST_LOAN_ITEM,
     PATCH_ITEM,
     POST_RESERVE_ITEM,
-    DELETE_RESERVATION
+    DELETE_RESERVATION,
+    DELETE_ITEM
 ];
 
 export default endpoints;

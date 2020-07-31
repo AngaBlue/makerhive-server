@@ -8,15 +8,16 @@ export default new Endpoint({
     schema: Joi.number().integer().min(0).required(),
     run: async (req, res, payload: number) => {
         //Get All Items w/ Active Loans, Reservations and Where Not Hidden
-        let item = await getRepository(Item)
+        let query = getRepository(Item)
             .createQueryBuilder("item")
             .leftJoinAndSelect("item.loans", "loan", "loan.returned IS NULL")
             .leftJoinAndSelect("loan.user", "loanUser")
             .leftJoinAndSelect("item.reservations", "reservation")
             .leftJoinAndSelect("reservation.user", "reservationUser")
-            .where("item.id = :id", { id: payload })
-            .andWhere("item.hidden = 0")
-            .getOne();
+            .where("item.id = :id", { id: payload });
+        //Hide Hidden Items from Non-Admin
+        if (!req.user || req.user.rank.permissions < 5) query = query.andWhere("item.hidden = 0");
+        let item = await query.getOne();
         if (!item)
             throw {
                 name: "Unknown Item",

@@ -26,6 +26,6 @@ export class Loan {
     @Column({ nullable: true })
     returned?: Date;
 
-    @Column({ nullable: true, length: 1024 })
+    @Column({ nullable: true, length: 1024, collation: "utf8mb4_unicode_ci", charset: "utf8mb4" })
     note?: string;
 }

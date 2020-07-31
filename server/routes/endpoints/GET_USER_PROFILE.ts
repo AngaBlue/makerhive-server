@@ -30,7 +30,7 @@ export default new Endpoint({
         user.loans = await getRepository(Loan)
             .createQueryBuilder("loan")
             .leftJoinAndSelect("loan.item", "item")
-            .orderBy("loan.borrowed", "DESC")
+            .orderBy("loan.borrowed", "ASC")
             .where("loan.user = :id", user)
             .andWhere("loan.returned IS NULL")
             .limit(25)
@@ -41,7 +41,7 @@ export default new Endpoint({
             .leftJoinAndSelect("reservation.item", "item")
             .leftJoinAndSelect("item.reservations", "itemRes", "itemRes.reserved < reservation.item")
             .where("reservation.user = :id", user)
-            .orderBy("reservation.reserved", "DESC")
+            .orderBy("reservation.reserved", "ASC")
             .limit(25)
             .getMany();
         //Map Positions

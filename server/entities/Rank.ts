@@ -6,7 +6,7 @@ export class Rank {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column("varchar", { length: 32 })
+    @Column({ length: 32, collation: "utf8mb4_unicode_ci", charset: "utf8mb4" })
     name: string;
 
     @Column("int", { width: 3 })

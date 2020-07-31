@@ -20,7 +20,7 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ length: 64 })
+    @Column({ length: 64, collation: "utf8mb4_unicode_ci", charset: "utf8mb4" })
     name: string;
 
     @Index({ unique: true })

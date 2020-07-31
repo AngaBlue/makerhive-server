@@ -7,10 +7,10 @@ export class Item {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ length: 128 })
+    @Column({ length: 128, collation: "utf8mb4_unicode_ci", charset: "utf8mb4" })
     name: string;
 
-    @Column({ length: 1024, nullable: true })
+    @Column({ length: 1024, nullable: true, collation: "utf8mb4_unicode_ci", charset: "utf8mb4" })
     description?: string;
 
     @Column("int", { default: 1, width: 3 })

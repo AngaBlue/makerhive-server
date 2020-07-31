@@ -31,7 +31,7 @@ export class Reservation {
     @CreateDateColumn({ precision: 0, default: () => "CURRENT_TIMESTAMP" })
     reserved: Date;
 
-    @Column({ nullable: true, length: 1024 })
+    @Column({ nullable: true, length: 1024, collation: "utf8mb4_unicode_ci", charset: "utf8mb4" })
     note: string;
 
     @Column({ select: false, readonly: true, nullable: true })
