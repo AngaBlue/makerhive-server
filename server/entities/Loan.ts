@@ -7,11 +7,11 @@ export class Loan {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne((type) => User, (user) => user.loans, { nullable: false })
+    @ManyToOne((type) => User, (user) => user.loans, { nullable: false, onDelete: "CASCADE" })
     @JoinColumn({ name: "user" })
     user: User;
 
-    @ManyToOne((type) => Item, (item) => item.loans, { nullable: false })
+    @ManyToOne((type) => Item, (item) => item.loans, { nullable: false, onDelete: "CASCADE" })
     @JoinColumn({ name: "item" })
     item: Item;
 

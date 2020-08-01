@@ -10,7 +10,10 @@ export default new Endpoint({
         //Get All Loans w/ User and Item
         return await getRepository(Loan).find({
             relations: ["user", "item"],
-            where: { returned: IsNull() }
+            where: { returned: IsNull() },
+            order: {
+                borrowed: "ASC"
+            }
         });
     }
 });

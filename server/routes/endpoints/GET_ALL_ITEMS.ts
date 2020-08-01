@@ -17,4 +17,4 @@ export default new Endpoint({
         if (!req.user || req.user.rank.permissions < 5) query = query.where("item.hidden = 0");
         return await query.getRawMany();
     }
-}); 
+});

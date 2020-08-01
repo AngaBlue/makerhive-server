@@ -13,13 +13,14 @@ export default new Endpoint({
                 throw {
                     name: "Unauthorised",
                     message: "You are not authorised to retrieve other user's data."
-                }
-            let user = await getRepository(User).findOne({ where: { id: payload }, relations: ["rank"] })
-            if (!user) throw {
-                name: "Unknown User",
-                message: "The user specified does not exist."
-            };
-            return user
+                };
+            let user = await getRepository(User).findOne({ where: { id: payload }, relations: ["rank"] });
+            if (!user)
+                throw {
+                    name: "Unknown User",
+                    message: "The user specified does not exist."
+                };
+            return user;
         }
         //Without Payload
         return req.user || null;

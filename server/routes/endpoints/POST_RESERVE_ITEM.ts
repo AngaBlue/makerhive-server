@@ -26,7 +26,7 @@ export default new Endpoint({
                 name: "Loan Limit Exceeded",
                 message: `A limit of ${config.MAX_LOANS} reservation${
                     config.MAX_LOANS === 1 ? "" : "s"
-                    } per user is imposed.  Please delete a reservation in order to reserve another item.`
+                } per user is imposed.  Please delete a reservation in order to reserve another item.`
             };
         //Check Item
         let item = await getRepository(Item)
@@ -47,7 +47,7 @@ export default new Endpoint({
                 name: "Insufficient Resources",
                 message: `Only ${payload.quantity} of the requested item ${
                     payload.quantity === 1 ? "is" : "are"
-                    } available.`
+                } available.`
             };
         //Check if User has an Existing Reservation
         let userReservation = item.reservations.find((r) => r.user.id === req.user.id);
@@ -69,7 +69,7 @@ export default new Endpoint({
             .leftJoinAndSelect("reservation.item", "item")
             .leftJoinAndSelect("item.reservations", "itemRes", "itemRes.reserved < reservation.item")
             .where("reservation.id = :id", { id: reservation.id })
-            .getOne();;
+            .getOne();
         reservation.position = reservation.item.reservations.length + 1;
         delete reservation.item.reservations;
         return reservation;
