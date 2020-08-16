@@ -1,13 +1,4 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    OneToMany,
-    Index,
-    ManyToOne,
-    CreateDateColumn,
-    JoinColumn
-} from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, Index, ManyToOne, CreateDateColumn, JoinColumn } from "typeorm";
 import { User } from "./User";
 import { Item } from "./Item";
 
@@ -16,11 +7,11 @@ export class Reservation {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @ManyToOne((type) => User, (user) => user.reservations, { nullable: false, onDelete: "CASCADE"  })
+    @ManyToOne((type) => User, (user) => user.reservations, { nullable: false, onDelete: "CASCADE" })
     @JoinColumn({ name: "user" })
     user: User;
 
-    @ManyToOne((type) => Item, (item) => item.reservations, { nullable: false, onDelete: "CASCADE"  })
+    @ManyToOne((type) => Item, (item) => item.reservations, { nullable: false, onDelete: "CASCADE" })
     @JoinColumn({ name: "item" })
     item: Item;
 

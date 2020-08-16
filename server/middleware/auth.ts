@@ -13,6 +13,7 @@ import path from "path";
 import fs from "fs";
 import { Profile } from "../typings/Google";
 
+//Allows CORS for Localhost Development
 app.set("trust proxy", 1);
 app.use(
     cors({
@@ -21,6 +22,7 @@ app.use(
     })
 );
 
+//Use Cookie Session Globally
 app.use(
     session({
         secret: config.COOKIE_SECRET,
@@ -42,10 +44,12 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+//Serialise User ID
 passport.serializeUser(async function (user: any, cb) {
     cb(null, user.id);
 });
 
+//Deserialise User
 passport.deserializeUser(async function (userID: number, cb) {
     //Get user w/ rank
     let user = await getRepository(User).findOne({
@@ -55,6 +59,7 @@ passport.deserializeUser(async function (userID: number, cb) {
     cb(null, user || null);
 });
 
+//Handle User Login
 passport.use(
     new GoogleStrategy(
         {
